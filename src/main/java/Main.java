@@ -1,6 +1,7 @@
 import Data.Account;
 import Data.User;
 import Service.Transaction;
+import Service.Transferservice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,12 +9,12 @@ import java.time.LocalDate;
 public class Main {
 
     public static void main(String[] args) {
-        LocalDate birthday = LocalDate.of(1996,01,01);
+        LocalDate birthday = LocalDate.of(1996,1,1);
         User user = new User("Jack", "Jackson",
                 birthday, "36708092232");
         User user2 = new User("Jenny", "Jackson",
                 birthday, "46708092232");
-        BigDecimal balance = new BigDecimal("100.0");
+        BigDecimal balance = new BigDecimal("50.0");
         BigDecimal balance2 = new BigDecimal("200.0");
 
 
@@ -26,6 +27,17 @@ public class Main {
 
         System.out.println(account.getBalance());
         System.out.println(account2.getBalance());
+
+        BigDecimal amount = new BigDecimal("50");
+
+        Transferservice transferservice = new Transferservice();
+
+        transferservice.createTransaction(account,account2,amount);
+
+
+        System.out.println(account);
+        System.out.println(account2);
+
 
 
     }

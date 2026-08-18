@@ -15,17 +15,15 @@ public class Account {
         return this.balance;
 
     }
-    public void addBalance(double amount) {
+    public void addBalance(BigDecimal amount) {
 
-        this.balance = this.balance.add(new BigDecimal(amount));
-
-    }
-    public void checkBalance() {
+        this.balance = this.balance.add(amount);
 
     }
-    public void reduceBalance(double amount) {
 
-        this.balance = this.balance.subtract(new BigDecimal(amount));
+    public void reduceBalance(BigDecimal amount) {
+
+        this.balance = this.balance.subtract(amount);
     }
 
     public int getAccountNumber() {
@@ -35,6 +33,6 @@ public class Account {
     @Override
 
     public String toString() {
-        return getAccountNumber() + " " + getBalance() + "€";
+        return  getBalance() + "€";
     }
 }
