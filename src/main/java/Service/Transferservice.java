@@ -4,36 +4,36 @@ package Service;
 import Data.Account;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import static Service.Status.FAILED;
+import static Service.Status.SUCCESS;
 
 public class Transferservice {
 
     private Recordservice recordservice;
 
+
     public Transferservice(Recordservice recordservice) {
         this.recordservice = recordservice;
+
     }
-    //Transaction (sender,receiever, amount, timestamp, status)
-    public Transaction createTransaction(Account sender, Account receiver, BigDecimal amount) {
-
-
-        Transaction failedTransaction = new Transaction(sender,receiver,amount);
+    //Transaction (sender,receiver, amount, timestamp, status)
+    public void createTransaction(Account sender, Account receiver, BigDecimal amount) {
 
         if (sender.getBalance().compareTo(amount) >= 0) {
-
-            System.out.println("If check worked");
             transfer(sender, receiver, amount);
-            Transaction succesfulTransaction = new Transaction(sender, receiver, amount);
+            Transaction succesfulTransaction = new Transaction(sender, receiver, amount, SUCCESS);
+
             this.recordservice.addTransactionToRecord(sender,succesfulTransaction);
             this.recordservice.addTransactionToRecord(receiver,succesfulTransaction);
-
-            return succesfulTransaction;
         } else {
-            System.out.println("Sender doesn't have enough balance to create a transaction");
+            Transaction failedTransaction = new Transaction(sender,receiver,amount, FAILED);
+            this.recordservice.addTransactionToRecord(sender,failedTransaction);
+            this.recordservice.addTransactionToRecord(receiver,failedTransaction);
+            System.out.println("FAILED TRANSFER BELOW");
         }
-        this.recordservice.addTransactionToRecord(sender,failedTransaction);
-        this.recordservice.addTransactionToRecord(receiver,failedTransaction);
-        return failedTransaction;
-
     }
     //Transfer
         public void transfer(Account sender, Account receiver, BigDecimal amount) {
@@ -46,11 +46,16 @@ public class Transferservice {
     // Deposits
         public void deposit(Account depositAccount, BigDecimal amount) {
                 depositAccount.addBalance(amount);
+
+            System.out.println("Deposit worked");
         }
 
     // Withdrawal
         public void withdrawal(Account withdrawalAccount, BigDecimal amount) {
                 withdrawalAccount.reduceBalance(amount);
+
+            System.out.println("Withdrawal worked");
+
         }
 
 

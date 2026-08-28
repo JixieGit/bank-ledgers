@@ -5,12 +5,11 @@ import java.util.ArrayList;
 
 public class User {
 
-    private int id;
     private String name;
     private String surname;
     private LocalDate birthDate;
     private String personalCode;
-    private ArrayList<Account> accountNumber;
+    private ArrayList<Account> account;
 
     public User(String name, String surname, LocalDate birthDate,
                 String personalCode) {
@@ -19,7 +18,7 @@ public class User {
         this.surname = surname;
         this.birthDate = birthDate;
         this.personalCode = personalCode;
-        this.accountNumber = new ArrayList<>();
+        this.account = new ArrayList<>();
 
     }
     public String getName() {
@@ -35,7 +34,7 @@ public class User {
         return this.personalCode;
     }
     public void addAccount(Account account) {
-        this.accountNumber.add(account);
+        this.account.add(account);
     }
 
     @Override
