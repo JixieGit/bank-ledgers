@@ -24,6 +24,7 @@ public class Recordservice {
             ArrayList<Transaction> transactionArrayList = new ArrayList<>();
             transactionArrayList.add(transaction);
             this.transaction.put(account,transactionArrayList);
+
         } else {
             this.transaction.get(account).add(transaction);
         }

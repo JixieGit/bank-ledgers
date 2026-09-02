@@ -39,9 +39,12 @@ public class Transaction {
     public BigDecimal getAmount() {
         return this.amount;
     }
-    public String timeStampFormatter() {
+    public String getFormattedtimeStamp() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         return this.timeStamp.format(formatter);
+    }
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class Transaction {
 
         return "Transaction: " +
                 "\n" + "Date created: " +
-                "\n"  + timeStampFormatter() +
+                "\n"  + getFormattedtimeStamp() +
                 "\n" + "Sender: " +  this.sender.getAccountNumber() +
                 "\n" + "Receiver: "  +  this.receiver.getAccountNumber()+
                 "\n" + "Amount: " + this.getAmount() +

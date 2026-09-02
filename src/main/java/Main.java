@@ -3,6 +3,8 @@ import Data.User;
 import Service.Recordservice;
 import Service.Transaction;
 import Service.Transferservice;
+import com.google.gson.Gson;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,6 +12,9 @@ import java.time.LocalDate;
 public class Main {
 
     public static void main(String[] args) {
+        Gson gson = new Gson();
+
+
         LocalDate birthday = LocalDate.of(1996,1,1);
         User user = new User("Jack", "Jackson",
                 birthday, "36708092232");
@@ -17,6 +22,7 @@ public class Main {
                 birthday, "46708092232");
         User user3 = new User("Jimmi", "Jackson",
                 birthday, "56708092232");
+
 
         BigDecimal balance = new BigDecimal("40.0");
         BigDecimal balance2 = new BigDecimal("200.0");
@@ -37,34 +43,20 @@ public class Main {
         user2.addAccount(account2);
         user3.addAccount(account3);
 
-        System.out.println("Account balance before sent: " + account);
-        System.out.println("Account2 balance before sent: " + account2);
-
         Recordservice recordservice = new Recordservice();
         Transferservice transferservice = new Transferservice(recordservice);
 
-        transferservice.createTransaction(account,account2,amount);
-        //This transaction should fail and only add the failed transaction to the record
-        System.out.println("First transaction between 2 accounts current balance:" + account);
-        System.out.println("First transaction between 2 accounts current balance:" + account2);
+        Transaction firstTransaction = transferservice.createTransaction(account2,account3,amount);
 
-        transferservice.createTransaction(account2, account, amount2);
-        //This transaction should succeed
-        System.out.println("Second transaction between 2 accounts current balance:" + account);
-        System.out.println("Second transaction between 2 accounts current balance:" + account2);
+        //Dummy data for testing methods
 
-        transferservice.createTransaction(account2, account3,amount3);
-        System.out.println("Third transaction between 2 accounts current balance:" + account2);
-        System.out.println("Third transaction between 2 accounts current balance:" + account3);
+        System.out.println("ACCOUNT 2 TRANSACTION" + "\n" + recordservice.printTransaction(account2));
+        System.out.println("ACCOUNT 3 TRANSACTION" + "\n" + recordservice.printTransaction(account3));
 
-        System.out.println("Amount to be sent: " + amount + "\n" +
-                 recordservice.printTransaction(account));
-        System.out.println("******************");
-        System.out.println("Amount to be sent: " + amount2 + "\n" +
-                 recordservice.printTransaction(account2));
-        System.out.println("******************");
-        System.out.println("Amount to be sent: " + amount3 + "\n" +
-                recordservice.printTransaction(account3));
+        transferservice.checkTransaction(firstTransaction);
+        System.out.println("******************************");
+        System.out.println("ACCOUNT 2 TRANSACTION" + "\n" + recordservice.printTransaction(account2));
+        System.out.println("ACCOUNT 3 TRANSACTION" + "\n" + recordservice.printTransaction(account3));
 
 
 

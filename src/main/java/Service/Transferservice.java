@@ -7,8 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static Service.Status.FAILED;
-import static Service.Status.SUCCESS;
+import static Service.Status.*;
 
 public class Transferservice {
 
@@ -20,20 +19,14 @@ public class Transferservice {
 
     }
     //Transaction (sender,receiver, amount, timestamp, status)
-    public void createTransaction(Account sender, Account receiver, BigDecimal amount) {
+    public Transaction createTransaction(Account sender, Account receiver, BigDecimal amount) {
 
-        if (sender.getBalance().compareTo(amount) >= 0) {
-            transfer(sender, receiver, amount);
-            Transaction succesfulTransaction = new Transaction(sender, receiver, amount, SUCCESS);
+        Transaction transaction = new Transaction(sender,receiver,amount,PENDING);
+        this.recordservice.addTransactionToRecord(sender,transaction);
+        this.recordservice.addTransactionToRecord(receiver,transaction);
 
-            this.recordservice.addTransactionToRecord(sender,succesfulTransaction);
-            this.recordservice.addTransactionToRecord(receiver,succesfulTransaction);
-        } else {
-            Transaction failedTransaction = new Transaction(sender,receiver,amount, FAILED);
-            this.recordservice.addTransactionToRecord(sender,failedTransaction);
-            this.recordservice.addTransactionToRecord(receiver,failedTransaction);
-            System.out.println("FAILED TRANSFER BELOW");
-        }
+        return transaction;
+
     }
     //Transfer
         public void transfer(Account sender, Account receiver, BigDecimal amount) {
@@ -42,6 +35,21 @@ public class Transferservice {
 
             System.out.println("Transfer worked");
     }
+        public void checkTransaction(Transaction transaction) {
+
+        // Check if the sender has the amount to send to receiver
+        if (transaction.getSenderAccountBalance().compareTo(transaction.getAmount()) >= 0) {
+                // Calling the transfer method to reduce the balance of the send and add balance of the receiver
+            transfer(transaction.getSenderAccount(), transaction.getReceiverAccount(),
+                        transaction.getAmount());
+                // Here should be a changeStatus method that will change the status to SUCCESS
+                        transaction.setStatus(SUCCESS);
+           } else {
+            System.out.println("Not enough balance");
+                transaction.setStatus(FAILED);
+
+            }
+        }
 
     // Deposits
         public void deposit(Account depositAccount, BigDecimal amount) {
@@ -57,6 +65,8 @@ public class Transferservice {
             System.out.println("Withdrawal worked");
 
         }
+
+
 
 
 
