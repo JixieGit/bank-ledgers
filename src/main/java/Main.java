@@ -3,17 +3,12 @@ import Data.User;
 import Service.Recordservice;
 import Service.Transaction;
 import Service.Transferservice;
-import com.google.gson.Gson;
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Main {
 
     public static void main(String[] args) {
-        Gson gson = new Gson();
-
 
         LocalDate birthday = LocalDate.of(1996,1,1);
         User user = new User("Jack", "Jackson",
@@ -31,9 +26,6 @@ public class Main {
         BigDecimal amount = new BigDecimal("50");
         BigDecimal amount2 = new BigDecimal("30");
         BigDecimal amount3 = new BigDecimal("60");
-
-
-
 
 
         Account account = new Account(1, balance);
