@@ -46,6 +46,9 @@ public class Transaction {
     public void setStatus(Status status) {
         this.status = status;
     }
+    public Status getStatus() {
+        return this.status;
+    }
 
     @Override
     public String toString() {

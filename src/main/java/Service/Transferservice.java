@@ -4,8 +4,7 @@ package Service;
 import Data.Account;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 
 import static Service.Status.*;
 
@@ -20,6 +19,11 @@ public class Transferservice {
     }
     //Transaction (sender,receiver, amount, timestamp, status)
     public Transaction createTransaction(Account sender, Account receiver, BigDecimal amount) {
+
+        if (amount.signum() <= 0 ) {
+            throw new RuntimeException("Amount is 0 or below 0");
+        }
+
 
         Transaction transaction = new Transaction(sender,receiver,amount,PENDING);
         this.recordservice.addTransactionToRecord(sender,transaction);
@@ -45,8 +49,9 @@ public class Transferservice {
                 // Here should be a changeStatus method that will change the status to SUCCESS
                         transaction.setStatus(SUCCESS);
            } else {
-            System.out.println("Not enough balance");
-                transaction.setStatus(FAILED);
+
+            transaction.setStatus(FAILED);
+
 
             }
         }
